@@ -18,8 +18,55 @@ it('should return status other then 401 if the user is singed in', async () => {
   expect(response.status).not.toEqual(401);
 });
 
-it('should return an error if invalid title is provided', async () => {});
+it('should return an error if invalid title is provided', async () => {
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      title: '',
+      price: 10,
+    })
+    .expect(400);
 
-it('should return an error if invalid price is provided', async () => {});
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      price: 10,
+    })
+    .expect(400);
+});
 
-it('should create a ticker with valid parameters', async () => {});
+it('should return an error if invalid price is provided', async () => {
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      title: 'Foo Fighters',
+      price: -10,
+    })
+    .expect(400);
+
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      title: 'Foo Fighters',
+    })
+    .expect(400);
+});
+
+it('should create a ticker with valid parameters', async () => {
+  /**
+   * @TODO - add check to make sure ticket got saved to db
+   */
+
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      title: 'Foo Fighters',
+      price: 10,
+    })
+    .expect(200);
+});
