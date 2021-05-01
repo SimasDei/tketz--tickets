@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface TicketAttrs {
+export interface TicketAttrs {
   title: string;
   price: number;
   userId: string;

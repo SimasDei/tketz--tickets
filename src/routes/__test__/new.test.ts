@@ -1,5 +1,7 @@
 import request from 'supertest';
+
 import { app } from '../../app';
+import { Ticket } from '../../models';
 import { signin } from '../../test';
 
 it('should have a route handler that is listening to route /api/tickets for post requests', async () => {
@@ -61,6 +63,9 @@ it('should create a ticker with valid parameters', async () => {
    * @TODO - add check to make sure ticket got saved to db
    */
 
+  let tickets = await Ticket.find({});
+  expect(tickets).toHaveLength(0);
+
   await request(app)
     .post('/api/tickets')
     .set('Cookie', signin())
@@ -68,5 +73,8 @@ it('should create a ticker with valid parameters', async () => {
       title: 'Foo Fighters',
       price: 10,
     })
-    .expect(200);
+    .expect(201);
+
+  tickets = await Ticket.find({});
+  expect(tickets).toHaveLength(1);
 });

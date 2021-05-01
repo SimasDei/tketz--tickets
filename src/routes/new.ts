@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { requireAuth, validateRequest } from '@tketz/common';
 
+import { Ticket, TicketAttrs } from '../models';
+
 const router = express.Router();
 
 router.post(
@@ -12,8 +14,16 @@ router.post(
     body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
   ],
   validateRequest,
-  (req: Request, res: Response) => {
-    res.sendStatus(200);
+  async (req: Request, res: Response) => {
+    const { price, title }: TicketAttrs = req.body;
+
+    const newTicket = Ticket.build({
+      title,
+      price,
+      userId: req.currentUser!.id,
+    });
+    await newTicket.save();
+    res.status(201).send(newTicket);
   }
 );
 
