@@ -1,10 +1,12 @@
 import request from 'supertest';
+import { randomBytes } from 'crypto';
 
 import { app } from '../../app';
 import { signin } from '../../test';
 
 it('Should return 404 status code if ticket is not found', async () => {
-  const mockId = 'mockId123';
+  const mockId = randomBytes(12).toString('hex');
+
   await request(app).get(`/api/tickets/${mockId}`).send().expect(404);
 });
 
