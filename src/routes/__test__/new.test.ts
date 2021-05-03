@@ -59,10 +59,6 @@ it('should return an error if invalid price is provided', async () => {
 });
 
 it('should create a ticker with valid parameters', async () => {
-  /**
-   * @TODO - add check to make sure ticket got saved to db
-   */
-
   let tickets = await Ticket.find({});
   expect(tickets).toHaveLength(0);
 
