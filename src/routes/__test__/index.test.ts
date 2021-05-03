@@ -1,13 +1,8 @@
-import { response } from 'express';
 import request from 'supertest';
 
 import { app } from '../../app';
 import { signin } from '../../test';
-
-const mockTicket = {
-  title: 'Foo Fighters',
-  price: 20,
-};
+import { mockTicket } from '../__mocks__';
 
 const createTicket = () => {
   return request(app).post('/api/tickets').set('Cookie', signin()).send(mockTicket).expect(201);

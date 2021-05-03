@@ -3,6 +3,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../models';
 import { signin } from '../../test';
+import { mockTicket } from '../__mocks__';
 
 it('should have a route handler that is listening to route /api/tickets for post requests', async () => {
   const response = await request(app).post('/api/tickets').send({});
@@ -26,7 +27,7 @@ it('should return an error if invalid title is provided', async () => {
     .set('Cookie', signin())
     .send({
       title: '',
-      price: 10,
+      price: mockTicket.price,
     })
     .expect(400);
 
@@ -34,7 +35,7 @@ it('should return an error if invalid title is provided', async () => {
     .post('/api/tickets')
     .set('Cookie', signin())
     .send({
-      price: 10,
+      price: mockTicket.price,
     })
     .expect(400);
 });
@@ -44,7 +45,7 @@ it('should return an error if invalid price is provided', async () => {
     .post('/api/tickets')
     .set('Cookie', signin())
     .send({
-      title: 'Foo Fighters',
+      title: mockTicket.title,
       price: -10,
     })
     .expect(400);
@@ -53,7 +54,7 @@ it('should return an error if invalid price is provided', async () => {
     .post('/api/tickets')
     .set('Cookie', signin())
     .send({
-      title: 'Foo Fighters',
+      title: mockTicket.title,
     })
     .expect(400);
 });
@@ -62,14 +63,7 @@ it('should create a ticker with valid parameters', async () => {
   let tickets = await Ticket.find({});
   expect(tickets).toHaveLength(0);
 
-  await request(app)
-    .post('/api/tickets')
-    .set('Cookie', signin())
-    .send({
-      title: 'Foo Fighters',
-      price: 10,
-    })
-    .expect(201);
+  await request(app).post('/api/tickets').set('Cookie', signin()).send(mockTicket).expect(201);
 
   tickets = await Ticket.find({});
   expect(tickets).toHaveLength(1);
