@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 const DEFAULT_USER = { email: 'mahalau@bruddha.com', password: '1234' };
 
 export const signin = () => {
   const payload = {
-    id: '121omdm0a9sfJASF10m1dasc',
+    id: new mongoose.Types.ObjectId().toHexString(),
     ...DEFAULT_USER,
     password: undefined,
   };

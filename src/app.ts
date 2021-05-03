@@ -3,7 +3,7 @@ import 'express-async-errors';
 import { NotFoundError, errorHandler, currentUser } from '@tketz/common';
 import cookieSession from 'cookie-session';
 
-import { createTickerRouter, showTicketRouter, ticketRouter } from './routes';
+import { createTickerRouter, showTicketRouter, ticketRouter, updateTicketRouter } from './routes';
 
 const app = express();
 app.set('trust proxy', true);
@@ -19,6 +19,7 @@ app.use(currentUser);
 
 app.use(ticketRouter);
 app.use(createTickerRouter);
+app.use(updateTicketRouter);
 app.use(showTicketRouter);
 
 app.all('*', () => {
